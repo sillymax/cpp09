@@ -186,7 +186,7 @@ void printResults(std::map<std::string, std::string> inputDB, std::map<std::stri
 	for (std::map<std::string, std::string>::const_iterator it1 = inputDB.begin(); it1 != inputDB.end(); it1++)
 	{
 		size_t pos = it1->first.find('_');
-		const std::string& dateInput = it1->first.substr(pos + 1); // Return substring starting after the underscore
+		const std::string& dateInput = (it1->first.substr(pos + 1).empty()) ? "\"\"" : it1->first.substr(pos + 1); // Return substring starting after the underscore
 		const std::string& valueInput = it1->second;
 
 		// Check if the date exists in csvDB
