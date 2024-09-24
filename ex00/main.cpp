@@ -16,6 +16,7 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 
 void trimSpacesAround(std::string& str)
@@ -101,6 +102,13 @@ bool isValidValue(const std::string& value)
 	return !(rate < 0 || rate > 1000);
 }
 
+std::string intToStr(int num)
+{
+	std::stringstream stream;
+	stream << num;
+	return stream.str();
+}
+
 
 std::map<std::string, std::string> parseInput(const std::string& filename)
 {
@@ -122,7 +130,7 @@ std::map<std::string, std::string> parseInput(const std::string& filename)
 			trimSpacesAround(value);
 			// if (isValidDate(date) && isValidValue(value))
 			{
-				date = std::to_string(count) + "_" + date;
+				date = intToStr(count) + "_" + date;
 				if (inputDB.find(date) != inputDB.end())
 					inputDB[date] += "," + value; // If the date already exists, append the new value
 				else
