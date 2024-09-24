@@ -107,6 +107,7 @@ std::map<std::string, std::string> parseInput(const std::string& filename)
 	std::map<std::string, std::string> inputDB;
 	std::ifstream file(filename.c_str());
 	std::string line, date, value;
+	int count = 0;
 
 	if (file.is_open())
 	{
@@ -119,13 +120,15 @@ std::map<std::string, std::string> parseInput(const std::string& filename)
 			std::getline(stream, value);
 			trimSpacesAround(date);
 			trimSpacesAround(value);
-			if (isValidDate(date) && isValidValue(value))
+			// if (isValidDate(date) && isValidValue(value))
 			{
+				date = std::to_string(count) + "_" + date;
 				if (inputDB.find(date) != inputDB.end())
 					inputDB[date] += "," + value; // If the date already exists, append the new value
 				else
 					inputDB[date] = value;
 			}
+			count++;
 		}
 	}
 	file.close();
@@ -174,7 +177,8 @@ void printResults(std::map<std::string, std::string> inputDB, std::map<std::stri
 		return ;
 	for (std::map<std::string, std::string>::const_iterator it1 = inputDB.begin(); it1 != inputDB.end(); it1++)
 	{
-		const std::string& dateInput = it1->first;
+		size_t pos = it1->first.find('_');
+		const std::string& dateInput = it1->first.substr(pos + 1); // Return substring starting after the underscore
 		const std::string& valueInput = it1->second;
 
 		// Check if the date exists in csvDB
@@ -182,27 +186,45 @@ void printResults(std::map<std::string, std::string> inputDB, std::map<std::stri
 		const std::string& valueCSV = (it2 != csvDB.end()) ? it2->second : "";
 		if (!valueCSV.empty())
 		{
-			// Exact match
-			std::stringstream stream(valueInput);
-			std::string value;
-			while (std::getline(stream, value, ','))
+			if (!isValidNumber(valueInput)) std::cout << "Error: not a number.\n";
+			else if (atof(valueInput.c_str()) < 1) std::cout << "Errpr: not a positive number.\n";
+			else if (atof(valueInput.c_str()) > 1000) std::cout << "Error: too large a number.\n";
+			else
 			{
-				float result = atof(value.c_str()) * atof(valueCSV.c_str());
-				std::cout << dateInput << " => " << value << " = " << result << "\n";
-			}
-		}
-		else
-		{
-			std::string closestDate = findClosestDate(csvDB, dateInput);
-			if (!closestDate.empty())
-			{
-				const std::string& closestValueCSV = csvDB.at(closestDate);
 				std::stringstream stream(valueInput);
 				std::string value;
 				while (std::getline(stream, value, ','))
 				{
-					float result = atof(value.c_str()) * atof(closestValueCSV.c_str());
+					float result = atof(value.c_str()) * atof(valueCSV.c_str());
 					std::cout << dateInput << " => " << value << " = " << result << "\n";
+				}
+			}
+		}
+		else
+		{
+			if (!isValidDate(dateInput))
+			{
+				std::cout << "Error: bad input => " << dateInput << "\n";
+			}
+			else
+			{
+				std::string closestDate = findClosestDate(csvDB, dateInput);
+				if (!closestDate.empty())
+				{
+					if (!isValidNumber(valueInput)) std::cout << "Error: not a number.\n";
+					else if (atof(valueInput.c_str()) < 1) std::cout << "Errpr: not a positive number.\n";
+					else if (atof(valueInput.c_str()) > 1000) std::cout << "Error: too large a number.\n";
+					else
+					{
+						const std::string& closestValueCSV = csvDB.at(closestDate);
+						std::stringstream stream(valueInput);
+						std::string value;
+						while (std::getline(stream, value, ','))
+						{
+							float result = atof(value.c_str()) * atof(closestValueCSV.c_str());
+							std::cout << dateInput << " => " << value << " = " << result << "\n";
+						}
+					}
 				}
 			}
 		}
