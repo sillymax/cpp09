@@ -195,7 +195,7 @@ void printResults(std::map<std::string, std::string> inputDB, std::map<std::stri
 		if (!valueCSV.empty())
 		{
 			if (!isValidNumber(valueInput)) std::cout << "Error: not a number.\n";
-			else if (atof(valueInput.c_str()) < 1) std::cout << "Errpr: not a positive number.\n";
+			else if (atof(valueInput.c_str()) < 0) std::cout << "Errpr: not a positive number.\n";
 			else if (atof(valueInput.c_str()) > 1000) std::cout << "Error: too large a number.\n";
 			else
 			{
@@ -220,7 +220,7 @@ void printResults(std::map<std::string, std::string> inputDB, std::map<std::stri
 				if (!closestDate.empty())
 				{
 					if (!isValidNumber(valueInput)) std::cout << "Error: not a number.\n";
-					else if (atof(valueInput.c_str()) < 1) std::cout << "Errpr: not a positive number.\n";
+					else if (atof(valueInput.c_str()) < 0) std::cout << "Errpr: not a positive number.\n";
 					else if (atof(valueInput.c_str()) > 1000) std::cout << "Error: too large a number.\n";
 					else
 					{
