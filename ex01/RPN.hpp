@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RPN.cpp                                            :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ychng <ychng@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/26 13:44:51 by ychng             #+#    #+#             */
-/*   Updated: 2024/09/26 13:45:52 by ychng            ###   ########.fr       */
+/*   Created: 2024/09/26 13:42:13 by ychng             #+#    #+#             */
+/*   Updated: 2024/09/26 13:43:08 by ychng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RPN.hpp"
-#include <iostream>
+#ifndef RPN_HPP
+# define RPN_HPP
 
-using std::cout;
+class RPN
+{
+public:
+	RPN();
+	~RPN();
+	RPN(const RPN& src);
+	RPN& operator=(const RPN& src);
+private:
+};
 
-RPN::RPN() { cout << "Constructor called\n"; }
-RPN::~RPN() { cout << "Destructor called\n"; }
-RPN::RPN(const RPN& src) { (void)src; cout << "Copy Constructor called\n"; }
-RPN& RPN::operator=(const RPN& src) { if (this != &src) (void)src; cout << "Copy Constructor called\n"; return *this; }
+#endif
